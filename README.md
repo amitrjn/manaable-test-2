@@ -7,14 +7,25 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-# Docker Setup Instructions
+# Laravel Docker Development Environment
 
-This repository includes a Docker-based development environment for Laravel. Follow these instructions to get started.
+This repository includes a Docker-based development environment for Laravel 11.6.0. The setup includes PHP 8.2, MySQL 8.0, and Nginx, configured for optimal Laravel development.
 
 ## Prerequisites
 
-- Docker
-- Docker Compose
+- Docker Engine 24.0+
+- Docker Compose v2.0+
+- Git
+
+## Features
+
+- **PHP 8.2**: Configured with all required Laravel extensions
+- **MySQL 8.0**: Persistent data storage
+- **Nginx**: Optimized for Laravel applications
+- **Docker Compose**: Orchestrates all services
+- **Health Checks**: Ensures proper service startup order
+- **Persistent Storage**: MySQL data persists between container restarts
+- **Custom Network**: Isolated network for better security
 
 ## Quick Start
 
@@ -53,18 +64,87 @@ docker compose exec app php artisan migrate
 
 6. Access the application at: http://localhost:8000
 
-## Docker Services
+## Development Workflow
 
-- **PHP (8.2)**: PHP-FPM with Laravel extensions
-- **MySQL (8.0)**: Database with persistent storage
-- **Nginx**: Web server for Laravel
+### Starting the Application
+```bash
+# Start all services in detached mode
+docker compose up -d
 
-## Useful Commands
+# Watch the logs
+docker compose logs -f
+```
 
-- Start containers: `docker compose up -d`
-- Stop containers: `docker compose down`
-- View logs: `docker compose logs`
-- Run artisan commands: `docker compose exec app php artisan [command]`
+### Common Development Tasks
+```bash
+# Run migrations
+docker compose exec app php artisan migrate
+
+# Clear cache
+docker compose exec app php artisan cache:clear
+
+# Run tests
+docker compose exec app php artisan test
+
+# Install new dependencies
+docker compose exec app composer require package-name
+```
+
+### Database Management
+```bash
+# Access MySQL CLI
+docker compose exec db mysql -u laravel -p laravel
+
+# Import database
+docker compose exec -T db mysql -u laravel -p laravel < backup.sql
+
+# Export database
+docker compose exec db mysqldump -u laravel -p laravel > backup.sql
+```
+
+### Container Management
+```bash
+# Stop all containers
+docker compose down
+
+# Stop and remove volumes (warning: this will delete database data)
+docker compose down -v
+
+# Rebuild containers
+docker compose up -d --build
+
+# View container status
+docker compose ps
+
+# View logs for specific service
+docker compose logs [service] # e.g., docker compose logs app
+```
+
+### Troubleshooting
+
+1. **Permission Issues**
+   ```bash
+   # Fix storage permissions
+   docker compose exec app chown -R www-data:www-data storage
+   docker compose exec app chmod -R 775 storage
+   ```
+
+2. **Database Connection Issues**
+   - Ensure MySQL container is healthy: `docker compose ps`
+   - Check MySQL logs: `docker compose logs db`
+   - Verify .env database credentials match docker-compose.yml
+
+3. **Container Access**
+   ```bash
+   # Access PHP container
+   docker compose exec app bash
+
+   # Access MySQL container
+   docker compose exec db bash
+
+   # Access Nginx container
+   docker compose exec nginx sh
+   ```
 
 ## About Laravel
 
