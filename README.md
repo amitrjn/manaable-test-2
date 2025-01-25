@@ -138,6 +138,33 @@ php artisan migrate:fresh
 php artisan migrate --seed
 ```
 
+## Authentication
+
+### User Authentication
+The application includes a secure authentication system with the following features:
+- Login page at `/login`
+- Session-based authentication
+- CSRF protection
+- Secure password handling
+
+### Using the Authentication System
+1. **Logging In**
+   - Visit `/login` or click the "Login" link on the homepage
+   - Enter your email and password
+   - If credentials are correct, you'll be redirected to the homepage
+   - Invalid credentials will return you to the login page with an error message
+
+2. **Logging Out**
+   - Click the "Logout" button in the navigation when logged in
+   - You'll be securely logged out and redirected to the login page
+   - All session data will be cleared
+
+### Security Notes
+- Passwords are hashed using Laravel's secure hashing mechanism
+- Sessions are protected against hijacking
+- CSRF tokens protect against cross-site request forgery
+- Failed login attempts return generic messages to prevent user enumeration
+
 ## Configuration and Maintenance
 
 ### Storage Permissions
