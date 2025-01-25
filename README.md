@@ -7,6 +7,65 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+# Docker Setup Instructions
+
+This repository includes a Docker-based development environment for Laravel. Follow these instructions to get started.
+
+## Prerequisites
+
+- Docker
+- Docker Compose
+
+## Quick Start
+
+1. Clone the repository:
+```bash
+git clone https://github.com/amitrjn/manaable-test-2.git
+cd manaable-test-2
+```
+
+2. Copy the environment file:
+```bash
+cp .env.example .env
+```
+
+3. Configure your .env file with these database settings:
+```
+DB_CONNECTION=mysql
+DB_HOST=db
+DB_PORT=3306
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=your_secure_password
+```
+
+4. Build and start the Docker containers:
+```bash
+docker compose up -d --build
+```
+
+5. Install dependencies and set up Laravel:
+```bash
+docker compose exec app composer install
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate
+```
+
+6. Access the application at: http://localhost:8000
+
+## Docker Services
+
+- **PHP (8.2)**: PHP-FPM with Laravel extensions
+- **MySQL (8.0)**: Database with persistent storage
+- **Nginx**: Web server for Laravel
+
+## Useful Commands
+
+- Start containers: `docker compose up -d`
+- Stop containers: `docker compose down`
+- View logs: `docker compose logs`
+- Run artisan commands: `docker compose exec app php artisan [command]`
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
