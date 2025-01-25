@@ -52,7 +52,15 @@ docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate
 ```
 
-6. Access the application at: http://localhost:8000
+6. Access the application:
+   - Local: http://localhost:8000
+   - Development Tunnel: Contact the development team for the tunnel URL and access credentials
+
+### Accessing Development Tunnel
+The development environment is protected by basic authentication:
+- Request access credentials from your team lead or system administrator
+- Authentication is required only for tunnel access, not for local development
+- Credentials should be handled securely and never committed to version control
 
 ### Docker Services
 
