@@ -9,12 +9,77 @@
 
 # Project Setup Instructions
 
-## Getting Started
+This repository includes a Laravel application that can be run either with Docker or traditional setup. Choose the setup method that best suits your needs.
+
+## Docker Setup (Recommended)
+
+### Prerequisites
+- Docker
+- Docker Compose
+
+### Quick Start with Docker
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd project-directory
+git clone https://github.com/amitrjn/manaable-test-2.git
+cd manaable-test-2
+```
+
+2. Copy the environment file:
+```bash
+cp .env.example .env
+```
+
+3. Configure your .env file with these database settings:
+```
+DB_CONNECTION=mysql
+DB_HOST=db
+DB_PORT=3306
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=your_secure_password
+```
+
+4. Build and start the Docker containers:
+```bash
+docker compose up -d --build
+```
+
+5. Install dependencies and set up Laravel:
+```bash
+docker compose exec app composer install
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate
+```
+
+6. Access the application at: http://localhost:8000
+
+### Docker Services
+
+- **PHP (8.2)**: PHP-FPM with Laravel extensions
+- **MySQL (8.0)**: Database with persistent storage
+- **Nginx**: Web server for Laravel
+
+### Docker Commands
+
+- Start containers: `docker compose up -d`
+- Stop containers: `docker compose down`
+- View logs: `docker compose logs`
+- Run artisan commands: `docker compose exec app php artisan [command]`
+
+## Traditional Setup
+
+### Prerequisites
+- PHP 8.2+
+- Composer
+- MySQL 8.0
+
+### Quick Start (Without Docker)
+
+1. Clone the repository:
+```bash
+git clone https://github.com/amitrjn/manaable-test-2.git
+cd manaable-test-2
 ```
 
 2. Install dependencies:
@@ -28,25 +93,31 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-## Database Setup Instructions
-
-### Default Credentials and Configuration
-The project uses MySQL as the database. Here are the default credentials from the `.env` file:
-
+4. Configure your database in `.env`:
 ```env
 DB_CONNECTION=mysql
-DB_HOST=<database-host>
+DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=<your-database-name>
-DB_USERNAME=<database-username>
-DB_PASSWORD=<database-password>
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
 ```
 
-Make sure to replace the placeholder values in your `.env` file with your actual database credentials.
+5. Run migrations:
+```bash
+php artisan migrate
+```
 
-### Commands to Run Migrations
+6. Start the development server:
+```bash
+php artisan serve
+```
 
-After setting up the database configuration, run the following commands:
+7. Access the application at: http://localhost:8000
+
+## Database Management
+
+### Migration Commands
 
 ```bash
 # Run all migrations
@@ -59,37 +130,29 @@ php artisan migrate:fresh
 php artisan migrate --seed
 ```
 
-## Other Notes
+## Configuration and Maintenance
 
-### Important Configuration Tips
-1. **Storage Directory Permissions**:
-   ```bash
-   chmod -R 775 storage bootstrap/cache
-   chown -R $USER:www-data storage bootstrap/cache
-   ```
+### Storage Permissions
+```bash
+chmod -R 775 storage bootstrap/cache
+chown -R $USER:www-data storage bootstrap/cache
+```
 
-2. **Cache Configuration**:
-   ```bash
-   # Clear application cache
-   php artisan cache:clear
-   
-   # Clear config cache
-   php artisan config:clear
-   
-   # Regenerate optimized files
-   php artisan optimize
-   ```
+### Cache Management
+```bash
+# Clear application cache
+php artisan cache:clear
 
-3. **Development Server**:
-   ```bash
-   # Start the development server
-   php artisan serve
-   ```
+# Clear config cache
+php artisan config:clear
 
-### Docker Environment
-If you're using Docker, please refer to our Docker setup documentation for container-specific instructions and commands.
+# Regenerate optimized files
+php artisan optimize
+```
 
-### Troubleshooting
+## Troubleshooting
+
+### Common Issues
 - Ensure all required PHP extensions are installed
 - Verify database connection settings
 - Check storage directory permissions
